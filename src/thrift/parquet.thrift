@@ -217,6 +217,22 @@ struct PageHeader {
 }
 
 /**
+ * Wrapper struct to specify sort order
+ */
+struct SortingColumn {
+  /** The column index (in this row group)
+  1: required i32 column_idx
+
+  /** If set and true, indicates this column is sorted in descending order.
+   * Otherwise, the column is sorted in ascending order. */
+  2: optional bool descending
+
+  /** If set and true, nulls will come before non-null values, otherwise,
+   * nulls go at the end. */
+  3: optional bool nulls_first
+}
+
+/**
  * Description for column metadata
  */
 struct ColumnMetaData {
@@ -279,6 +295,14 @@ struct RowGroup {
 
   /** Number of rows in this row group **/
   3: required i64 num_rows
+
+  /** If set, specifies a sort ordering of the rows in this RowGroup.
+   * The values are indices into the columns list and can be a subset of the
+   * columns.
+   * For example <3, 4, 1> indicates the rows are first sorted by col 3, then
+   * col 4, then col 1.
+   */
+  4: optional list<SortingColumn> sorting_columns
 }
 
 /**
