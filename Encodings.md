@@ -55,3 +55,24 @@ a complete group should still be output with 0's filling in for the remainder.
 For example, if the input was (1,2,3,4,5): the resulting encoding should
 behave as if the input was (1,2,3,4,5,0,0,0) and the two groups should be
 encoded back to back.
+
+### RLE-length Strings:
+
+Supported Types: STRING
+
+This encoding would be used instead of PLAIN for string pages. We can then also add 
+DICTIONARY_RLE_LENGTH_STRING so that the dictionary is also encoded this way.
+
+For this encoding, we will take all the string lengths and encode them with RLE followed
+by the strings just concatenated back to back. The expected savings is from the cost of
+encoding the string lengths and possibly better compression in the string data (it is no
+longer interleaved with the lengths).
+
+For example, if the data was "Hello", "World", "Foobar", "ABCDEF", with plain encoding
+this is:
+
+5Hello5World6Foobar6ABCDEF. 
+
+With the new encoding it is:
+
+RLE(2 5's), RLE(2 6's), HelloWorldFoobarABCDEF

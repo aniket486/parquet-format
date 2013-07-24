@@ -142,6 +142,9 @@ enum Encoding {
   /** Bit packed encoding.  This can only be used if the data has a known max
    * width.  Usable for definition/repetition levels encoding.  **/
   BIT_PACKED = 4;
+
+  /** Encoding for strings to separate the length values and the data **/
+  RLE_LENGTH_STRINGS = 5;
 }
 
 /**
